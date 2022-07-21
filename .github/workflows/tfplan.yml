@@ -21,6 +21,7 @@ jobs:
 
     - name: 'Create Terraform Plan Artifact for Apply'
       run: |
+        sudo apt-get install jq moreutils
         terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
           -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
           -backend-config="region=${{ secrets.AWS_REGION }}" \
@@ -28,7 +29,6 @@ jobs:
           -backend-config="key=${{ secrets.KEY }}" \
           -backend-config="dynamodb_table=${{ secrets.DYNAMODB_TABLE }}" \
           -backend-config="encrypt=${{ secrets.BACKEND_ENCRYPT }}"
-        sudo apt-get install jq moreutils
         jq '.aws_region = "${{ secrets.AWS_REGION }}"' variables.tfvars.json|sponge variables.tfvars.json
         jq '.aws_replica_region = "${{ secrets.AWS_REPLICA_REGION }}"' variables.tfvars.json|sponge variables.tfvars.json
         jq '.aws_region_code = "${{ secrets.AWS_REGION_CODE }}"' variables.tfvars.json|sponge variables.tfvars.json
