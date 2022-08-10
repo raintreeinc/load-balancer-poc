@@ -47,3 +47,11 @@ data "aws_security_group" "data-inbound" {
 data "aws_security_group" "data-outbound" {
   name    = "${lower(local.local_data.aws_region_code)}-sg-${lower(local.local_data.tag_env)}-db-outbound"
 }
+
+data "aws_security_group" "web-inbound" {
+  name    = "${lower(local.local_data.aws_region_code)}-sg-${lower(local.local_data.tag_env)}-web-public-inbound"
+}
+
+data "aws_acm_certificate" "this" {
+  domain   = "*.${lower(local.local_data.tag_env)}.raintreeinc.com"
+}
